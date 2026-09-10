@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Post | North Haven Ragdoll Cattery</title>
+  <meta id="metaDesc" name="description" content="North Haven Ragdoll Cattery blog." />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=13" />
+  <link rel="stylesheet" href="css/pages.css?v=13" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+</head>
+<body data-page="blog">
+  <div id="site-header"></div>
+
+  <main>
+    <article class="blog-article" id="blogArticle">
+      <div class="blog-article-hero">
+        <img id="postCover" src="" alt="" />
+      </div>
+      <div class="container blog-article-body">
+        <p class="eyebrow" id="postMeta"></p>
+        <h1 id="postTitle"></h1>
+        <div class="blog-article-content" id="postContent"></div>
+        <div class="blog-article-cta">
+          <a href="blog.html" class="text-link">← Back to Blog</a>
+          <a href="available-kittens.html" class="btn btn-primary">View Available Kittens</a>
+        </div>
+      </div>
+    </article>
+
+    <div id="postMissing" class="page-section" hidden>
+      <div class="container" style="text-align:center;max-width:560px;">
+        <h2 style="font-family:var(--font-serif);color:var(--navy);margin-bottom:0.75rem;">Post not found</h2>
+        <p style="color:var(--text-muted);margin-bottom:1.5rem;">This article may have been removed or is still a draft.</p>
+        <a href="blog.html" class="btn btn-primary">Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script type="application/ld+json" id="blogJsonLd"></script>
+  <script src="js/store.js?v=10"></script>
+  <script src="js/layout.js?v=5"></script>
+  <script src="js/main.js?v=4"></script>
+  <script>
+    (function () {
+      var S = window.NHStore;
+      var params = new URLSearchParams(window.location.search);
+      var slug = params.get("slug") || "";
+      var post = slug ? S.getBlogBySlug(slug) : null;
+
+      if (!post || post.status !== "published") {
+        document.getElementById("blogArticle").hidden = true;
+        document.getElementById("postMissing").hidden = false;
+        return;
+      }
+
+      function formatDate(iso) {
+        try {
+          return new Date(iso).toLocaleDateString(undefined, {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          });
+        } catch (e) {
+          return "";
+        }
+      }
+
+      document.title = post.title + " | North Haven Ragdoll Cattery";
+      document.getElementById("metaDesc").setAttribute("content", post.metaDescription || post.excerpt || "");
+      document.getElementById("postCover").src = post.coverImage;
+      document.getElementById("postCover").alt = post.coverImageAlt || post.title;
+      document.getElementById("postMeta").textContent =
+        (post.category || "Guides") + " · " + formatDate(post.createdAt);
+      document.getElementById("postTitle").textContent = post.title;
+      document.getElementById("postContent").innerHTML = post.contentHtml || "";
+
+      var ld = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.metaDescription || post.excerpt || "",
+        image: post.coverImage,
+        datePublished: post.createdAt,
+        dateModified: post.updatedAt || post.createdAt,
+        author: {
+          "@type": "Organization",
+          name: "North Haven Ragdoll Cattery",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "North Haven Ragdoll Cattery",
+          logo: {
+            "@type": "ImageObject",
+            url: "assets/logo.png",
+          },
+        },
+        mainEntityOfPage: window.location.href,
+        keywords: (post.seoKeywords || post.tags || []).join(", "),
+      };
+      document.getElementById("blogJsonLd").textContent = JSON.stringify(ld);
+    })();
+  </script>
+</body>
+</html>

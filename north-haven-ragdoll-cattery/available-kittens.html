@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Kittens | North Haven Ragdoll Cattery</title>
+  <meta name="description" content="Browse our currently available and reserved Ragdoll kittens at North Haven Ragdoll Cattery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=25" />
+  <link rel="stylesheet" href="css/pages.css?v=25" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+</head>
+<body data-page="kittens">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&w=1600&q=80" alt="" />
+      </div>
+      <div class="page-hero-content">
+        <img class="page-logo" src="assets/logo.png" alt="North Haven Ragdoll Cattery" width="96" height="96" />
+        <h1>Available Kittens</h1>
+        <p class="eyebrow">Find Your Perfect Companion</p>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container">
+        <div class="page-intro">
+          <p class="eyebrow">Current Litter</p>
+          <h2>Meet Our Ragdoll Kittens</h2>
+          <p>Every kitten is raised in our home, fully socialized, health-checked, and ready to join a loving forever family. Status updates in real time — Available or Reserved.</p>
+        </div>
+
+        <div class="filter-bar" role="group" aria-label="Filter kittens">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="available">Available</button>
+          <button class="filter-btn" data-filter="reserved">Reserved</button>
+        </div>
+
+        <div class="kittens-grid-full" id="kittenList"></div>
+      </div>
+    </section>
+
+    <section class="page-cta">
+      <h2>Ready to Reserve Your Kitten?</h2>
+      <p>Open a kitten’s page to complete the full application, or start from our adoption process.</p>
+      <a href="adoption-process.html" class="btn btn-white">Start Your Adoption Application →</a>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/store.js?v=11"></script>
+  <script src="js/layout.js?v=5"></script>
+  <script src="js/main.js?v=4"></script>
+  <script>
+    (function () {
+      var S = window.NHStore;
+      var list = document.getElementById("kittenList");
+      if (!S || !list) {
+        if (list) list.innerHTML = "<p>Unable to load kittens. Please refresh.</p>";
+        return;
+      }
+
+      var kittens = S.getKittens().filter(function (k) {
+        return k.status !== "placed";
+      });
+
+      list.innerHTML = kittens
+        .map(function (k) {
+          var href = S.kittenDetailUrl(k.id);
+          return [
+            '<article class="kitten-card" data-status="' + S.escapeHtml(k.status) + '">',
+            '  <a class="kitten-card-link" href="' + href + '">',
+            '    <div class="photo"><img src="' + S.escapeHtml(k.photo) + '" alt="' + S.escapeHtml(k.name) + '" /></div>',
+            '    <div class="info">',
+            "      <h3>" + S.escapeHtml(k.name) + "</h3>",
+            '      <p class="meta">' + S.escapeHtml(k.color + " • " + k.sex) + "</p>",
+            '      <p class="detail-list">Born: ' + S.escapeHtml(k.born || "—") + " • Ready: " + S.escapeHtml(k.ready || "—") + "</p>",
+            '      <div class="card-footer">',
+            '        <span class="badge ' + S.badgeClass(k.status) + '">' + S.statusLabel(k.status) + "</span>",
+            '        <span class="card-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>',
+            "      </div>",
+            "    </div>",
+            "  </a>",
+            "</article>",
+          ].join("\n");
+        })
+        .join("");
+
+      document.querySelectorAll(".filter-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(function (b) {
+            b.classList.remove("active");
+          });
+          btn.classList.add("active");
+          var filter = btn.getAttribute("data-filter");
+          document.querySelectorAll("#kittenList .kitten-card").forEach(function (card) {
+            var status = card.getAttribute("data-status");
+            card.style.display = filter === "all" || filter === status ? "" : "none";
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

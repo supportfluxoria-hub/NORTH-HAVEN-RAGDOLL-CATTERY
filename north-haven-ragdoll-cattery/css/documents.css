@@ -1,0 +1,285 @@
+/* Printable / downloadable legal documents */
+:root {
+  --navy: #0a1d37;
+  --gold: #b08d5b;
+  --text: #2c3340;
+  --muted: #5c6573;
+  --line: rgba(176, 141, 91, 0.35);
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: #f3ebe0;
+  line-height: 1.65;
+}
+
+.doc-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: var(--navy);
+  color: #fff;
+}
+
+.doc-toolbar p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.doc-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 6px;
+  border: none;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--navy);
+  background: #fff;
+}
+
+.doc-btn-ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.doc-btn:hover {
+  opacity: 0.92;
+}
+
+.doc-sheet {
+  width: min(820px, 94%);
+  margin: 1.75rem auto 3rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(10, 29, 55, 0.1);
+  padding: 2.5rem 2.75rem 3rem;
+}
+
+.doc-header {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 2px solid var(--line);
+  margin-bottom: 1.75rem;
+}
+
+.doc-header img {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.doc-brand .name {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 0.2rem;
+}
+
+.doc-brand .tag {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.doc-brand .meta {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.doc-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 3vw, 2rem);
+  color: var(--navy);
+  margin: 0 0 0.35rem;
+  line-height: 1.2;
+}
+
+.doc-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.doc-sheet h2 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin: 1.6rem 0 0.55rem;
+}
+
+.doc-sheet p,
+.doc-sheet li {
+  font-size: 0.88rem;
+  color: var(--text);
+  margin: 0 0 0.7rem;
+}
+
+.doc-sheet ul,
+.doc-sheet ol {
+  margin: 0 0 0.85rem;
+  padding-left: 1.2rem;
+}
+
+.doc-sheet li {
+  margin-bottom: 0.4rem;
+}
+
+.doc-note {
+  background: rgba(176, 141, 91, 0.1);
+  border-left: 3px solid var(--gold);
+  padding: 0.85rem 1rem;
+  margin: 1.25rem 0;
+  font-size: 0.85rem;
+}
+
+.doc-note strong {
+  color: var(--navy);
+}
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.doc-field {
+  border-bottom: 1px solid rgba(10, 29, 55, 0.18);
+  min-height: 2.4rem;
+  padding: 0.35rem 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.doc-field strong {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+
+.doc-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.doc-sign-line {
+  border-bottom: 1px solid rgba(10, 29, 55, 0.25);
+  height: 2.5rem;
+  margin: 1.5rem 0 0.4rem;
+}
+
+.doc-sign-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.doc-footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.doc-footer img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+.doc-footer p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .doc-sheet {
+    padding: 1.5rem 1.15rem 2rem;
+    margin-top: 1rem;
+  }
+
+  .doc-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .doc-grid,
+  .doc-signatures {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .doc-toolbar {
+    display: none !important;
+  }
+
+  .doc-sheet {
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .doc-sheet h2 {
+    break-after: avoid;
+  }
+
+  .doc-signatures {
+    break-inside: avoid;
+  }
+}
