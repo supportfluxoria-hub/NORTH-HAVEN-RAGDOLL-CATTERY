@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews | North Haven Ragdoll Cattery</title>
+  <meta name="description" content="Real stories from happy families who adopted Ragdoll kittens from North Haven." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=13" />
+  <link rel="stylesheet" href="css/pages.css?v=13" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+</head>
+<body data-page="reviews">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?auto=format&fit=crop&w=1600&q=80" alt="" />
+      </div>
+      <div class="page-hero-content">
+        <img class="page-logo" src="assets/logo.png" alt="North Haven Ragdoll Cattery" width="96" height="96" />
+        <h1>Happy Families</h1>
+        <p class="eyebrow">Real Stories From Our Adopted Kittens</p>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container">
+        <div class="page-intro">
+          <p class="eyebrow">Forever Family</p>
+          <h2>What Our Families Say</h2>
+          <p>Nothing means more to us than hearing how our kittens settle into their forever homes.</p>
+        </div>
+
+        <div class="reviews-grid" id="reviewsGrid"></div>
+        <div id="reviewsEmpty" class="page-intro" hidden>
+          <p>Approved family reviews will appear here soon.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section alt" id="submit-review">
+      <div class="container">
+        <div class="page-intro">
+          <p class="eyebrow">Share Your Experience</p>
+          <h2>Leave a Review</h2>
+          <p>We’d love to hear from you. Reviews are checked by our team before they appear on the site.</p>
+        </div>
+
+        <form class="application-form" id="reviewForm">
+          <div class="form-fields">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="reviewName">Your Name</label>
+                <input id="reviewName" name="name" type="text" required autocomplete="name" placeholder="Sarah M." />
+              </div>
+              <div class="form-group">
+                <label for="reviewLocation">City / State</label>
+                <input id="reviewLocation" name="location" type="text" required placeholder="California" />
+              </div>
+              <div class="form-group">
+                <label for="reviewEmail">Email <span class="optional">(private)</span></label>
+                <input id="reviewEmail" name="email" type="email" autocomplete="email" placeholder="you@email.com" />
+              </div>
+              <div class="form-group">
+                <label for="reviewRating">Rating</label>
+                <select id="reviewRating" name="rating" required>
+                  <option value="5">★★★★★ 5 stars</option>
+                  <option value="4">★★★★☆ 4 stars</option>
+                  <option value="3">★★★☆☆ 3 stars</option>
+                  <option value="2">★★☆☆☆ 2 stars</option>
+                  <option value="1">★☆☆☆☆ 1 star</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label for="reviewText">Your Review</label>
+                <textarea id="reviewText" name="text" required placeholder="Tell families about your experience with North Haven…"></textarea>
+              </div>
+            </div>
+            <p class="form-note">Your review will stay private until an admin confirms it for the website.</p>
+            <button type="submit" class="btn btn-primary">Submit Review →</button>
+          </div>
+          <div class="form-success" role="status">
+            Thank you! Your review was received.
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="page-cta">
+      <h2>Ready to Write Your Own Story?</h2>
+      <p>Start your adoption journey with North Haven today.</p>
+      <a href="adoption-process.html" class="btn btn-white">Start Your Application →</a>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/store.js?v=11"></script>
+  <script src="js/form-mail.js?v=3"></script>
+  <script src="js/layout.js?v=5"></script>
+  <script src="js/main.js?v=4"></script>
+  <script>
+    (function () {
+      var S = window.NHStore;
+      var grid = document.getElementById("reviewsGrid");
+      var empty = document.getElementById("reviewsEmpty");
+      var reviews = S.getApprovedReviews();
+
+      if (!reviews.length) {
+        empty.hidden = false;
+      } else {
+        grid.innerHTML = reviews
+          .map(function (r) {
+            return [
+              '<article class="review-card">',
+              '  <div class="stars" aria-label="' + r.rating + ' stars">' + S.starsHtml(r.rating) + "</div>",
+              "  <blockquote>“" + S.escapeHtml(r.text) + "”</blockquote>",
+              '  <div class="reviewer">',
+              '    <img src="' + S.escapeHtml(r.photo || "") + '" alt="" />',
+              "    <div><strong>" + S.escapeHtml(r.name) + "</strong><span>" + S.escapeHtml(r.location || "") + "</span></div>",
+              "  </div>",
+              "</article>",
+            ].join("\n");
+          })
+          .join("");
+      }
+
+      var form = document.getElementById("reviewForm");
+      if (!form) return;
+
+      if (window.NHMail) {
+        window.NHMail.bind(form, {
+          subject: "North Haven — New Review Submission",
+          buildPayload: function (f) {
+            return {
+              formType: "review",
+              name: f.name.value.trim(),
+              location: f.location.value.trim(),
+              email: f.email.value.trim(),
+              rating: f.rating.value,
+              review: f.text.value.trim(),
+              sourcePage: location.href,
+              _replyto: f.email.value.trim(),
+            };
+          },
+          onLocalSave: function (payload) {
+            S.addReview({
+              name: payload.name,
+              location: payload.location,
+              email: payload.email,
+              rating: payload.rating,
+              text: payload.review,
+            });
+          },
+        });
+      } else {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          S.addReview({
+            name: form.name.value.trim(),
+            location: form.location.value.trim(),
+            email: form.email.value.trim(),
+            rating: form.rating.value,
+            text: form.text.value.trim(),
+          });
+          form.classList.add("sent");
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | North Haven Ragdoll Cattery</title>
+  <meta name="description" content="Tips, stories, and updates from North Haven Ragdoll Cattery — kitten care, Ragdoll life, and cattery news." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=13" />
+  <link rel="stylesheet" href="css/pages.css?v=13" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+</head>
+<body data-page="blog">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="page-hero-bg">
+        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1600&q=80" alt="" />
+      </div>
+      <div class="page-hero-content">
+        <img class="page-logo" src="assets/logo.png" alt="North Haven Ragdoll Cattery" width="96" height="96" />
+        <h1>Blog</h1>
+        <p class="eyebrow">Stories, Tips &amp; Cattery Updates</p>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container">
+        <div class="page-intro">
+          <p class="eyebrow">From North Haven</p>
+          <h2>Insights for Ragdoll Families</h2>
+          <p>Care guides, litter updates, and everyday moments from our home-raised Ragdolls — written for families who want to give their kitten the best start.</p>
+        </div>
+
+        <div class="blog-grid" id="blogGrid"></div>
+        <div id="blogEmpty" class="admin-empty" hidden style="max-width:640px;margin:0 auto;text-align:center;color:var(--text-muted);">
+          New posts are coming soon. Check back shortly.
+        </div>
+      </div>
+    </section>
+
+    <section class="page-cta">
+      <h2>Ready for Your Own Ragdoll?</h2>
+      <p>Browse available kittens or start an adoption application when you are ready.</p>
+      <a href="available-kittens.html" class="btn btn-white">View Available Kittens</a>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/store.js?v=10"></script>
+  <script src="js/layout.js?v=5"></script>
+  <script src="js/main.js?v=4"></script>
+  <script>
+    (function () {
+      var S = window.NHStore;
+      var grid = document.getElementById("blogGrid");
+      var empty = document.getElementById("blogEmpty");
+      var posts = S.getPublishedBlogs();
+
+      if (!posts.length) {
+        empty.hidden = false;
+        return;
+      }
+
+      function formatDate(iso) {
+        try {
+          return new Date(iso).toLocaleDateString(undefined, { month: "long", year: "numeric" });
+        } catch (e) {
+          return "";
+        }
+      }
+
+      grid.innerHTML = posts
+        .map(function (b) {
+          return [
+            '<article class="blog-card">',
+            '  <a href="blog-post.html?slug=' + encodeURIComponent(b.slug) + '" class="blog-card-link">',
+            '    <div class="photo">',
+            '      <img src="' + S.escapeHtml(b.coverImage) + '" alt="' + S.escapeHtml(b.coverImageAlt || b.title) + '" />',
+            "    </div>",
+            '    <div class="info">',
+            '      <p class="blog-meta">' + S.escapeHtml((b.category || "Guides") + " · " + formatDate(b.createdAt)) + "</p>",
+            "      <h3>" + S.escapeHtml(b.title) + "</h3>",
+            "      <p>" + S.escapeHtml(b.excerpt || b.metaDescription || "") + "</p>",
+            '      <span class="text-link">Read More &rarr;</span>',
+            "    </div>",
+            "  </a>",
+            "</article>",
+          ].join("\n");
+        })
+        .join("");
+    })();
+  </script>
+</body>
+</html>
